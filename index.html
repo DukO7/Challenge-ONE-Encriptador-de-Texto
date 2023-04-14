@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Encriptador de texto</title>
+    
+  </head>
+  <body>
+    <img id="logo" src="img/logo.png" >
+    <div id="input-container">
+      <textarea id="input-text" placeholder="Ingrese el texto aqui" required></textarea>
+      <div id="pie"><img src="img/alerta.png" width="25px" >Solo letras minusculas y sin acentos</div>
+      <h6 id="creador">Creado por: DukO7</h6>
+       <div id="botones">
+        <button id="encrypt-button">Codificar</button>
+        <button id="decode-button">Decodificar</button>
+       </div>
+    </div>
+    <div id="output-text">
+      <p id="textp"><img src="img/texto.png" ></p>
+      <span>Ningun mensaje fue encontrado</span>
+    <h5>Ingresa el texto que desees encriptar o desencriptar.</h5>
+
+    </div>
+    
+    <script>
+  function encryptText(text) {
+  let encryptedText = "";
+
+  for (let i = 0; i < text.length; i++) {
+    let char = text[i];
+    if (char.match(/[aeiou]/i)) {
+      if (char === "e") {
+        char = "enter";
+      } else if (char === "i") {
+        char = "imes";
+      } else if (char === "a") {
+        char = "ai";
+      } else if (char === "o") {
+        char = "ober";
+      } else if (char === "u") {
+        char = "ufat";
+      }
+    }
+    encryptedText += char;
+  }
+
+  return encryptedText;
+}
+
+function decodeText(text) {
+  let decodedText = "";
+
+  decodedText = text.replace(/enter/g, "e");
+  decodedText = decodedText.replace(/imes/g, "i");
+  decodedText = decodedText.replace(/ai/g, "a");
+  decodedText = decodedText.replace(/ober/g, "o");
+  decodedText = decodedText.replace(/ufat/g, "u");
+
+  return decodedText;
+}
+
+const inputText = document.querySelector("#input-text");
+const outputText = document.querySelector("#output-text");
+const encryptButton = document.querySelector("#encrypt-button");
+const decodeButton = document.querySelector("#decode-button");
+
+function handleClick() {
+  const text = inputText.value.trim();
+  if (!text) {
+    alert("El campo de texto no puede estar vacío");
+    return;
+  }
+
+  if (this === encryptButton) {
+    const encryptedText = encryptText(text);
+    const encryptedButton = '<button id="copied-encrypt" style="position: absolute;bottom: 50px;">Copiar</button>';
+    const encryptedOutput = '<div>' + encryptedText + '</div>' + '<br/><br/><br/>' + encryptedButton;
+    outputText.innerHTML = encryptedOutput;
+    
+    const copyButton = document.querySelector("#copied-encrypt");
+    copyButton.addEventListener("click", () => {
+      const copiedText = outputText.querySelector("div").textContent;
+      navigator.clipboard.writeText(copiedText);
+      alert("Texto copiado al portapapeles!");
+    });
+    
+  } else if (this === decodeButton) {
+    const decodedText = decodeText(text);
+    const decodedButton = '<button id="copied-decode" style="position: absolute;bottom: 50px;">Copiar</button>';
+    const decodedOutput = '<div>' + decodedText + '</div>' + '<br/><br/><br/>' + decodedButton;
+    outputText.innerHTML = decodedOutput;
+
+    const copyButton = document.querySelector("#copied-decode");
+    copyButton.addEventListener("click", () => {
+      const copiedText = outputText.querySelector("div").textContent;
+      navigator.clipboard.writeText(copiedText);
+      alert("Texto copiado al portapapeles!");
+    });
+  }
+}
+
+encryptButton.addEventListener("click", handleClick);
+decodeButton.addEventListener("click", handleClick);
+
+    </script>
+
+  </body>
+</html>
